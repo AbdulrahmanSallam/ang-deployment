@@ -1,0 +1,1 @@
+import{mb as t}from"./chunk-UIL2WAGM.js";var n=class r{transform(i,e){return i.split(" ").slice(0,e).join(" ")}static \u0275fac=function(e){return new(e||r)};static \u0275pipe=t({name:"sliceText",type:r,pure:!0})};export{n as a};
