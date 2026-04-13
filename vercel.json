@@ -1,0 +1,34 @@
+{
+  "builds": [
+    {
+      "src": "dist/FreshCart/server/server.mjs",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/assets/(.*)",
+      "dest": "/dist/FreshCart/browser/assets/$1"
+    },
+    {
+      "src": "/(.*\\.(js|css|ico|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|txt|xml|webmanifest))",
+      "dest": "/dist/FreshCart/browser/$1"
+    },
+    {
+      "src": "/product-details/(.*)",
+      "dest": "/dist/FreshCart/server/server.mjs"
+    },
+    {
+      "src": "/checkout/(.*)",
+      "dest": "/dist/FreshCart/server/server.mjs"
+    },
+    {
+      "src": "/auth/(.*)",
+      "dest": "/dist/FreshCart/server/server.mjs"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/dist/FreshCart/server/server.mjs"
+    }
+  ]
+}
