@@ -1,0 +1,15 @@
+<mat-dialog-content>
+  <figure class="flex justify-between items-center gap-10 lg:gap-14 pt-4">
+    <img
+      [src]="data.brand.image"
+      class="order-1 w-44 sm:w-60 lg:w-72"
+      alt="data.brand.name"
+    />
+    <figcaption class="font-bold text-xl text-black">
+      {{ data.brand.name }}
+    </figcaption>
+  </figure>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-dialog-close class="main-btn">Close</button>
+</mat-dialog-actions>

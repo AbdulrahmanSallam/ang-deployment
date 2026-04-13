@@ -1,0 +1,257 @@
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+@use 'variables' as *;
+
+html {
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+
+  @include mat.expansion-overrides(
+    (
+      header-hover-state-layer-color: $color-green,
+      header-focus-state-layer-color: $color-green,
+      header-collapsed-state-height: 60px,
+      header-text-size: 1.2rem,
+      header-text-color: $color-white,
+      container-text-color: $color-gray,
+    )
+  );
+
+  @include mat.form-field-overrides(
+    (
+      // indicator
+      filled-focus-active-indicator-color: $color-green,
+      filled-active-indicator-color: $color-black,
+      filled-hover-active-indicator-color: $color-black,
+      filled-error-active-indicator-color: $color-error,
+      filled-error-focus-active-indicator-color: $color-error,
+      filled-error-hover-active-indicator-color: $color-error,
+
+      // text-color
+      filled-focus-label-text-color: $color-green,
+      filled-label-text-color: $color-green,
+      filled-hover-label-text-color: $color-green,
+      filled-input-text-color: $color-gray,
+      filled-error-hover-label-text-color: $color-error,
+      filled-error-focus-label-text-color: $color-error,
+      filled-error-label-text-color: $color-error,
+      error-text-color: $color-error,
+      // text-size
+      subscript-text-size: 12px
+    )
+  );
+
+  @include mat.stepper-overrides(
+    (
+      header-label-text-color: $color-gray,
+      header-error-state-label-text-color: $color-error,
+      header-selected-state-label-text-color: $color-green,
+      line-color: $color-green,
+      header-selected-state-icon-background-color: $color-dark-green,
+      header-edit-state-icon-background-color: $color-green,
+      header-icon-foreground-color: $color-white,
+      header-selected-state-icon-foreground-color: $color-white,
+      header-error-state-icon-foreground-color: $color-error,
+    )
+  );
+
+  @include mat.badge-overrides(
+    (
+      background-color: $color-green,
+      text-color: $color-white,
+    )
+  );
+
+  @include mat.form-field-overrides(
+    (
+      filled-focus-active-indicator-color: $color-green,
+      filled-focus-label-text-color: $color-green,
+    )
+  );
+
+  @include mat.button-overrides(
+    (
+      text-label-text-color: $color-white,
+      text-state-layer-color: $color-green,
+      text-ripple-color: $color-dark-green,
+    )
+  );
+
+  @include mat.expansion-overrides(
+    (
+      container-background-color: $color-light,
+      header-hover-state-layer-color: $color-green,
+      header-text-color: $color-gray,
+      header-description-color: $color-gray,
+      header-indicator-color: $color-gray,
+      header-text-size: 1rem,
+    )
+  );
+}
+
+body {
+  // Default the application to a light color theme. This can be changed to
+  // `dark` to enable the dark color theme, or to `light dark` to defer to the
+  // user's system settings.
+  color-scheme: light;
+
+  // Set a default background, font and text colors for the application using
+  // Angular Material's system-level CSS variables. Learn more about these
+  // variables at https://material.angular.dev/guide/system-variables
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  // Reset the user agent margin.
+  margin: 0;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Disable text formatting context menu */
+* {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version */
+}
+
+/* Allow text selection only in specific elements */
+input,
+textarea,
+[contenteditable] {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+// snackbar
+
+.error-snackbar {
+  .mdc-snackbar__surface {
+    background-color: $color-error !important;
+  }
+
+  .mdc-snackbar__label {
+    color: $color-white !important;
+  }
+  .mdc-snackbar__action {
+    color: $color-gray !important;
+  }
+}
+
+// In global styles.scss
+.success-snackbar {
+  .mdc-snackbar__surface {
+    background-color: $color-green !important;
+  }
+
+  .mdc-snackbar__label {
+    color: $color-white !important;
+  }
+  .mdc-snackbar__action {
+    color: $color-gray !important;
+  }
+}
+
+.info-snackbar {
+  .mdc-snackbar__surface {
+    background-color: $color-info !important;
+  }
+
+  .mdc-snackbar__label {
+    color: $color-white !important;
+  }
+
+  .mdc-snackbar__action {
+    color: $color-gray !important;
+  }
+}
+
+.warning-snackbar {
+  .mdc-snackbar__surface {
+    background-color: $color-warning !important;
+  }
+
+  .mdc-snackbar__label {
+    color: $color-white !important;
+  }
+
+  .mdc-snackbar__action {
+    color: $color-gray !important;
+  }
+}
+
+.mat-horizontal-content-container {
+  max-width: 450px !important;
+  width: 100%;
+  margin-inline: auto;
+}
+
+// components
+
+@layer components {
+  .main-btn {
+    @apply text-white  bg-custom-gradient  px-5 py-2.5 capitalize rounded-lg cursor-pointer;
+
+    text-decoration: none;
+    background-size: 200% auto;
+    transition: transform 0.2s, background-position 0.4s;
+
+    //Button shape & animation
+    background-size: 200% auto;
+
+    &:hover {
+      background-position: right center;
+    }
+  }
+
+  .count-btn {
+    @apply border border-custom-green  rounded-lg  w-9 py-2 hover:text-white hover:bg-custom-green transition-colors;
+  }
+  .disabled-btn {
+    @apply opacity-50 pointer-events-none select-none;
+  }
+
+  .error-btn {
+    @apply text-white bg-custom-red  px-5 py-2.5 capitalize rounded-lg cursor-pointer;
+  }
+
+  .heading {
+    @apply text-2xl font-bold text-center;
+  }
+}
+
+.loading,
+.error,
+.empty {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

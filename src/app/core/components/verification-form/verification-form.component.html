@@ -1,0 +1,23 @@
+<form [formGroup]="verificationForm" (submit)="verify()" class="mt-4">
+  <mat-form-field class="w-full mb-2">
+    <mat-label>Verification Code</mat-label>
+    <input matInput formControlName="resetCode" required />
+    @if (verificationCodeControl.hasError('pattern')) {
+    <mat-error>Invalid Code</mat-error>
+    } @if (verificationCodeControl.hasError('required')) {
+    <mat-error>Code is required</mat-error>
+    }
+  </mat-form-field>
+
+  <button
+    type="submit"
+    [disabled]="isSubmitting() || verificationForm.invalid"
+    [class.disabled-btn]="isSubmitting() || verificationForm.invalid"
+    type="submit"
+    class="main-btn ms-auto block"
+  >
+    @if (isSubmitting()) {
+    <i class="fas fa-spinner fa-spin fa-fw"></i>
+    } Submit
+  </button>
+</form>

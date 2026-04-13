@@ -1,0 +1,24 @@
+<article class="relative flex items-center py-2 gap-2 border-b">
+  <div class="content-center">
+    <img
+      [src]="cartItem().product.imageCover"
+      class="w-32"
+      [alt]="cartItem().product.title"
+    />
+  </div>
+  <div class="flex-grow flex flex-wrap gap-3 justify-between items-center">
+    <div>
+      <h3 class="mb-2 font-semibold">
+        {{ cartItem().product.title | sliceText : 2 }}
+      </h3>
+      <p class="text-sm">{{ cartItem().product.category.name }}</p>
+    </div>
+    <div>
+      <p>
+        <span class="font-medium mb-2 text-custom-green">Count :</span>
+        &nbsp;&nbsp;{{ cartItem().count }}
+      </p>
+      <app-product-price [price]="cartItem().price"></app-product-price>
+    </div>
+  </div>
+</article>

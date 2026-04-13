@@ -1,0 +1,21 @@
+<mat-dialog-content>
+  <h1 class="heading text-black mb-5">
+    {{ data.categoryName }}'s SubCategories
+  </h1>
+  @if (data.subcategories.length > 0) {
+  <div class="flex flex-wrap gap-2">
+    @for (subcategory of data.subcategories; track subcategory._id) {
+    <span class="p-4 bg-custom-light text-sm font-semibold text-center">{{
+      subcategory.name
+    }}</span>
+    }
+  </div>
+  }@else{
+  <p class="text-red-600">
+    There are no subcategories available for this category
+  </p>
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-dialog-close class="main-btn">Close</button>
+</mat-dialog-actions>

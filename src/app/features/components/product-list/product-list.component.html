@@ -1,0 +1,39 @@
+<div class="flex flex-col min-h-[50vh]">
+  <div
+    class="grow grid gap-y-6 sm:gap-8 md:gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+  >
+    @for (product of (products()|paginate:{ id:'paginate',itemsPerPage: pageSize(), currentPage:
+    page(), totalItems: total()} |filterProductsByName:name()| filterProductsByRating:rating()) ;
+    track product._id) {
+    <div class="max-w-[300px] w-full mx-auto sm:max-w-none">
+      <app-product-card
+        [product]="product"
+        (productId)="goToProudctDetails($event)"
+      ></app-product-card>
+    </div>
+    }@empty {
+    <div class="col-span-full place-items-center grid">
+      <p class="text-xl">No Products Available.</p>
+    </div>
+    }
+  </div>
+
+  @if ( products().length > 20) {
+  <div class="flex justify-center items-center pt-8 my-pagination">
+    <pagination-controls
+      id="paginate"
+      (pageChange)="pageChangeEvent($event)"
+      (pageBoundsCorrection)="pageChangeEvent($event)"
+      [maxSize]="9"
+      [directionLinks]="true"
+      [autoHide]="true"
+      [responsive]="true"
+      previousLabel="Previous"
+      nextLabel="Next"
+      screenReaderPaginationLabel="Pagination"
+      screenReaderPageLabel="page"
+      screenReaderCurrentLabel="You're on page"
+    ></pagination-controls>
+  </div>
+  }
+</div>

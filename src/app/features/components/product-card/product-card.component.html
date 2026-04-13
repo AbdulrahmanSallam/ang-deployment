@@ -1,0 +1,34 @@
+<article
+  class="group w-full relative overflow-hidden h-full rounded-xl hover:shadow-custom-green focus-within:shadow-custom-green transition-shadow cursor-pointer p-2"
+>
+  <div
+    class="absolute top-7 right-0 translate-x-[150%] focus:translate-x-0 group-hover:translate-x-0 transition-transform duration-[.2s]"
+  >
+    <app-add-to-wishlist [product]="this.product()" />
+  </div>
+  <div (click)="emitProductId(product()._id)">
+    <figure>
+      <img
+        loading="lazy"
+        [src]="product().imageCover"
+        class="max-w-[220px] w-full mx-auto"
+        [alt]="product().title"
+      />
+      <figcaption class="font-semibold">
+        {{ product().title | sliceText : 2 }}
+      </figcaption>
+    </figure>
+    <div>
+      <span class="block text-sm">{{ product().category.name }}</span>
+      <app-rating [ratingAverage]="product().ratingsAverage" />
+
+      <app-product-price [price]="product().price" />
+    </div>
+  </div>
+
+  <div
+    class="translate-y-[200%] group-hover:translate-y-0 focus-within:translate-y-0 transition-transform"
+  >
+    <app-add-to-cart-btn [productId]="product()._id" />
+  </div>
+</article>

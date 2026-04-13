@@ -1,0 +1,71 @@
+<section class="pt-8 pb-14">
+  <div class="container">
+    <!-- Loading State -->
+    @if (showLoading()) {
+    <div class="loading text-center py-8">
+      <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
+      <p class="mt-4">Loading categories...</p>
+    </div>
+    }
+
+    <!-- Error State -->
+    @if (showError()) {
+    <div class="error text-center py-8">
+      <i class="fas fa-exclamation-triangle fa-2x text-red-500 mb-4"></i>
+      <p class="text-red-600 mb-4">{{ error() }}</p>
+      <button
+        (click)="retryLoading()"
+        class="bg-primary text-white px-6 py-2 rounded hover:bg-primary-dark transition-colors"
+      >
+        Try Again
+      </button>
+    </div>
+    }
+
+    <!-- Empty State -->
+    @if (showEmpty()) {
+    <div class="empty text-center py-8">
+      <i class="fas fa-folder-open fa-2x text-gray-400 mb-4"></i>
+      <p class="text-gray-600">No categories found at the moment.</p>
+    </div>
+    }
+
+    <!-- Content State -->
+    @if (showContent()) {
+    <main
+      class="grid gap-y-6 sm:gap-8 md:gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+    >
+      @for (category of categories()| paginate: { itemsPerPage: pageSize(), currentPage: page(),
+      totalItems: total() }; track category._id) {
+      <article
+        class="max-w-[300px] w-full mx-auto sm:max-w-none"
+        (click)="getSubCategories(category.name, category._id)"
+      >
+        <app-custom-card>
+          <img [src]="category.image" [alt]="category.name" card-image />
+          <span card-name>{{ category.name }}</span>
+        </app-custom-card>
+      </article>
+      }
+    </main>
+
+    @if (total() > categories().length) {
+    <div class="flex justify-center items-center pt-8">
+      <pagination-controls
+        id="paginate"
+        (pageChange)="pageChangeEvent($event)"
+        (pageBoundsCorrection)="pageChangeEvent($event)"
+        [maxSize]="9"
+        [directionLinks]="true"
+        [autoHide]="true"
+        [responsive]="true"
+        previousLabel="Previous"
+        nextLabel="Next"
+        screenReaderPaginationLabel="Pagination"
+        screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page"
+      ></pagination-controls>
+    </div>
+    } }
+  </div>
+</section>

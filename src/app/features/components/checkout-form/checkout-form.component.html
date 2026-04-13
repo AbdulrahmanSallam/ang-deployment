@@ -1,0 +1,55 @@
+<form
+  (ngSubmit)="submit()"
+  [formGroup]="checkoutForm"
+  class="w-full"
+  aria-labelledby="login-heading"
+>
+  <h1 id="login-heading" class="heading mb-2">Shipping Details</h1>
+
+  <mat-form-field class="w-full mb-4">
+    <mat-label>Phone Number</mat-label>
+    <input type="tel" formControlName="phone" matInput required autocomplete="tel" />
+    @if (getControl('phone')?.hasError('pattern') && !getControl('phone')?.hasError('required')) {
+    <mat-error>Egyptian phone number only</mat-error>
+    } @if (getControl('phone')?.hasError('required')) {
+    <mat-error>Phone is required</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="w-full mb-4">
+    <mat-label>City</mat-label>
+    <input type="text" formControlName="city" matInput required autocomplete="city" />
+    @if (getControl('city')?.hasError('minlength')) {
+    <mat-error>At least 4 characters</mat-error>
+    } @if (getControl('city')?.hasError('maxlength')) {
+    <mat-error>At most 30 characters</mat-error>
+    } @if (getControl('city')?.hasError('required')) {
+    <mat-error>City is required</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="w-full mb-4">
+    <mat-label>Details</mat-label>
+    <input type="text" formControlName="details" matInput required autocomplete="details" />
+    @if (getControl('details')?.hasError('minlength')) {
+    <mat-error>At least 10 characters</mat-error>
+    } @if (getControl('details')?.hasError('maxlength')) {
+    <mat-error>At most 100 characters</mat-error>
+    } @if (getControl('details')?.hasError('required')) {
+    <mat-error>Details is required</mat-error>
+    }
+  </mat-form-field>
+
+  <button
+    [disabled]="isLoading() || checkoutForm.invalid"
+    [class.disabled-btn]="isLoading() || checkoutForm.invalid"
+    type="submit"
+    class="main-btn ms-auto block"
+    [attr.aria-disabled]="isLoading() || checkoutForm.invalid"
+  >
+    @if (isLoading()) {
+    <i aria-hidden="true" class="fas fa-spinner fa-spin fa-fw"></i>
+    } @if (paymentType()=== 'cash' ) { Confirm Cash Order } @else if (paymentType()=== 'online' ) {
+    pay Online }
+  </button>
+</form>

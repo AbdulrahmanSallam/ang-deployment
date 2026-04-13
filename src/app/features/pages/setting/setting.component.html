@@ -1,0 +1,264 @@
+<section class="w-full my-16 md:my-24">
+  <div class="container">
+    <div class="max-w-md w-full mx-auto bg-custom-light rounded-md p-4">
+      @if (isLoading() && !dataLoaded()) {
+      <div class="loading text-center py-8">
+        <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
+        <p class="mt-4">Loading your account data...</p>
+      </div>
+      } @else if (!userAccountData() && dataLoaded()) {
+      <div class="error text-center py-8">
+        <i class="fas fa-exclamation-triangle fa-2x text-warning"></i>
+        <p class="mt-4">Failed to load account data. Please try again.</p>
+        <button
+          (click)="getUserAccountData()"
+          class="main-btn mt-4"
+          type="button"
+        >
+          Retry
+        </button>
+      </div>
+      } @else if (userAccountData()) {
+      <mat-tab-group>
+        <mat-tab label="Change Account">
+          <form
+            (ngSubmit)="editAccount()"
+            [formGroup]="editAccountForm"
+            class="w-full pt-4"
+            aria-labelledby="account-settings-heading"
+          >
+            <h2 id="account-settings-heading" class="sr-only">
+              Account Settings
+            </h2>
+
+            <mat-form-field class="w-full mb-4">
+              <mat-label>Name</mat-label>
+              <input
+                type="text"
+                formControlName="name"
+                matInput
+                required
+                autocomplete="name"
+                [attr.aria-describedby]="
+                  shouldShowError('name') ? 'name-error' : null
+                "
+              />
+              @if (shouldShowError('name', 'account')) {
+              <mat-error id="name-error">
+                {{ getErrorMessage("name", "account") }}
+              </mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field class="w-full mb-4">
+              <mat-label>Email</mat-label>
+              <input
+                type="email"
+                formControlName="email"
+                matInput
+                required
+                autocomplete="email"
+                [attr.aria-describedby]="
+                  shouldShowError('email') ? 'email-error' : null
+                "
+              />
+              @if (shouldShowError('email')) {
+              <mat-error id="email-error">
+                {{ getErrorMessage("email") }}
+              </mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field class="w-full mb-4">
+              <mat-label>Phone Number</mat-label>
+              <input
+                type="tel"
+                formControlName="phone"
+                matInput
+                required
+                autocomplete="tel"
+                [attr.aria-describedby]="
+                  shouldShowError('phone') ? 'phone-error' : null
+                "
+              />
+              @if (shouldShowError('phone')) {
+              <mat-error id="phone-error">
+                {{ getErrorMessage("phone") }}
+              </mat-error>
+              }
+            </mat-form-field>
+
+            <div class="flex justify-end">
+              <button
+                [disabled]="
+                  isLoading() || editAccountForm.invalid || !hasAccountChanges()
+                "
+                [class.disabled-btn]="
+                  isLoading() || editAccountForm.invalid || !hasAccountChanges()
+                "
+                type="submit"
+                class="main-btn ms-auto"
+                [attr.aria-disabled]="
+                  isLoading() || editAccountForm.invalid || !hasAccountChanges()
+                "
+              >
+                @if (isLoading()) {
+                <i aria-hidden="true" class="fas fa-spinner fa-spin fa-fw"></i>
+                } Update Account
+              </button>
+            </div>
+          </form>
+        </mat-tab>
+
+        <mat-tab label="Change Password">
+          <form
+            (ngSubmit)="editPassword()"
+            [formGroup]="editPasswordForm"
+            class="w-full pt-4"
+            aria-labelledby="password-change-heading"
+          >
+            <h2 id="password-change-heading" class="sr-only">
+              Change Password
+            </h2>
+
+            <mat-form-field class="w-full mb-4">
+              <mat-label>Current Password</mat-label>
+              <input
+                formControlName="currentPassword"
+                matInput
+                [type]="hideCurrentPassword() ? 'password' : 'text'"
+                required
+                autocomplete="current-password"
+                [attr.aria-describedby]="
+                  shouldShowError('currentPassword', 'password')
+                    ? 'current-password-error'
+                    : null
+                "
+              />
+              <button
+                type="button"
+                mat-icon-button
+                matSuffix
+                (click)="togglePasswordVisibility('current', $event)"
+                [attr.aria-label]="
+                  hideCurrentPassword()
+                    ? 'Show current password'
+                    : 'Hide current password'
+                "
+                [attr.aria-pressed]="!hideCurrentPassword()"
+              >
+                <mat-icon>
+                  {{ hideCurrentPassword() ? "visibility_off" : "visibility" }}
+                </mat-icon>
+              </button>
+              @if (shouldShowError('currentPassword', 'password')) {
+              <mat-error id="current-password-error">
+                {{ getErrorMessage("currentPassword", "password") }}
+              </mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field class="w-full mb-4">
+              <mat-label>New Password</mat-label>
+              <input
+                formControlName="password"
+                matInput
+                [type]="hideNewPassword() ? 'password' : 'text'"
+                required
+                autocomplete="new-password"
+                [attr.aria-describedby]="
+                  shouldShowError('password', 'password')
+                    ? 'new-password-error'
+                    : null
+                "
+              />
+              <button
+                type="button"
+                mat-icon-button
+                matSuffix
+                (click)="togglePasswordVisibility('new', $event)"
+                [attr.aria-label]="
+                  hideNewPassword() ? 'Show new password' : 'Hide new password'
+                "
+                [attr.aria-pressed]="!hideNewPassword()"
+              >
+                <mat-icon>
+                  {{ hideNewPassword() ? "visibility_off" : "visibility" }}
+                </mat-icon>
+              </button>
+              @if (shouldShowError('password', 'password')) {
+              <mat-error id="new-password-error">
+                {{ getErrorMessage("password", "password") }}
+              </mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field class="w-full mb-4">
+              <mat-label>Confirm Password</mat-label>
+              <input
+                formControlName="rePassword"
+                matInput
+                [type]="hideConfirmPassword() ? 'password' : 'text'"
+                required
+                autocomplete="new-password"
+                [attr.aria-describedby]="
+                  shouldShowError('rePassword', 'password')
+                    ? 'confirm-password-error'
+                    : null
+                "
+              />
+              <button
+                type="button"
+                mat-icon-button
+                matSuffix
+                (click)="togglePasswordVisibility('confirm', $event)"
+                [attr.aria-label]="
+                  hideConfirmPassword()
+                    ? 'Show confirm password'
+                    : 'Hide confirm password'
+                "
+                [attr.aria-pressed]="!hideConfirmPassword()"
+              >
+                <mat-icon>
+                  {{ hideConfirmPassword() ? "visibility_off" : "visibility" }}
+                </mat-icon>
+              </button>
+              @if (shouldShowError('rePassword', 'password')) {
+              <mat-error id="confirm-password-error">
+                {{ getErrorMessage("rePassword", "password") }}
+              </mat-error>
+              }
+            </mat-form-field>
+
+            <div class="flex justify-end">
+              <button
+                [disabled]="
+                  formSubmitting() ||
+                  editPasswordForm.invalid ||
+                  !hasPasswordChanges()
+                "
+                [class.disabled-btn]="
+                  formSubmitting() ||
+                  editPasswordForm.invalid ||
+                  !hasPasswordChanges()
+                "
+                type="submit"
+                class="main-btn"
+                [attr.aria-disabled]="
+                  formSubmitting() ||
+                  editPasswordForm.invalid ||
+                  !hasPasswordChanges()
+                "
+              >
+                @if (formSubmitting()) {
+                <i aria-hidden="true" class="fas fa-spinner fa-spin fa-fw"></i>
+                } Change Password
+              </button>
+            </div>
+          </form>
+        </mat-tab>
+      </mat-tab-group>
+      }
+    </div>
+  </div>
+</section>

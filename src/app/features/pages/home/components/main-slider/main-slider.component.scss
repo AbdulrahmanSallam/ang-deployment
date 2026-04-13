@@ -1,0 +1,14 @@
+@use 'swiper/css' as *;
+
+.swiper-slide {
+  @apply w-full h-full;
+  img {
+    @apply w-full h-full  object-fill;
+  }
+}
+
+.right {
+  img {
+    @apply h-1/2 w-full  object-fill;
+  }
+}

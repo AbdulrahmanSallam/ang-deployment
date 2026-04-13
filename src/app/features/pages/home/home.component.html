@@ -1,0 +1,56 @@
+<section class="pb-14 container">
+  <header>
+    <div>
+      <app-main-slider />
+    </div>
+    <div class="mb-2">
+      <app-categories-slider />
+    </div>
+  </header>
+
+  <main>
+    <h2 class="text-lg font-bold">Top Rated</h2>
+    <div class="pt-4">
+      @if (showLoading()) {
+      <div class="loading text-center py-8">
+        <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
+        <p class="mt-4">Loading amazing products...</p>
+      </div>
+      }
+
+      <!-- Error State -->
+      @if (showError()) {
+      <div class="error text-center py-8">
+        <i class="fas fa-exclamation-triangle fa-2x text-red-500 mb-4"></i>
+        <p class="text-red-600 mb-4">{{ error() }}</p>
+        <button
+          (click)="retryLoading()"
+          class="bg-primary text-white px-6 py-2 rounded hover:bg-primary-dark transition-colors"
+        >
+          Try Again
+        </button>
+      </div>
+      }
+
+      <!-- Empty State -->
+      @if (showEmpty()) {
+      <div class="empty text-center py-8">
+        <i class="fas fa-box-open fa-2x text-gray-400 mb-4"></i>
+        <p class="text-gray-600">No products found at the moment.</p>
+      </div>
+      }
+
+      <!-- Content (Products List) -->
+      @if (showContent()) {
+      <app-product-list
+        [products]="products()"
+        [rating]="4"
+        (currentPage)="getCurrentPage($event)"
+        [page]="page()"
+        [pageSize]="pageSize()"
+        [total]="total()"
+      />
+      }
+    </div>
+  </main>
+</section>

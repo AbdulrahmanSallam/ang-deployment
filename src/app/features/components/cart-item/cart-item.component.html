@@ -1,0 +1,37 @@
+<article class="relative flex items-center py-1 gap-4 border-b">
+  <button (click)="removeProduct()" class="absolute top-1 right-1">
+    <i aria-label="remove product from cart" class="fas fa-remove"></i>
+  </button>
+  <div class="content-center">
+    <img
+      [src]="cartProudct().product.imageCover"
+      class="max-w-32 w-full object-fill"
+      [alt]="cartProudct().product.title"
+    />
+  </div>
+  <div class="flex-grow flex flex-wrap gap-4 justify-between items-center">
+    <div>
+      <h3 class="block my-2 font-semibold">
+        {{ cartProudct().product.title | sliceText : 3 }}
+      </h3>
+      <div class="w-fit">
+        <app-product-price [price]="cartProudct().price"></app-product-price>
+      </div>
+      <button
+        (click)="goToProductDetails()"
+        class="group hover:text-custom-green transition-colors mt-4"
+      >
+        Go to Details
+        <i
+          aria-label="go to product details"
+          class="fas fa-arrow-right group-hover:translate-x-2 transition-transform"
+        ></i>
+      </button>
+    </div>
+    <div class="space-x-2 shrink-0">
+      <button (click)="updateCartQuantity(cartProudct().count - 1)" class="count-btn">-</button>
+      <span>{{ cartProudct().count }}</span>
+      <button (click)="updateCartQuantity(cartProudct().count + 1)" class="count-btn">+</button>
+    </div>
+  </div>
+</article>

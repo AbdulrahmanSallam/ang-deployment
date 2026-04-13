@@ -1,0 +1,33 @@
+<button
+  type="button"
+  class="p-1 cursor-pointer relative"
+  [class.text-custom-red]="isInWishlist()"
+  [class.opacity-50]="isProcessing()"
+  [class.cursor-not-allowed]="isProcessing()"
+  [attr.aria-pressed]="isInWishlist()"
+  [attr.aria-label]="getAriaLabel()"
+  [attr.aria-busy]="isProcessing()"
+  [title]="getTooltipText()"
+  [disabled]="isProcessing()"
+  (click)="toggleWishlist()"
+  (keyup.enter)="toggleWishlist()"
+  (keyup.space)="toggleWishlist()"
+>
+  <!-- Heart Icon (hidden when processing) -->
+  <i class="fas fa-2xl fa-heart" aria-hidden="true" [class.invisible]="isProcessing()"></i>
+
+  <!-- Loading Spinner (shown when processing) -->
+  @if (isProcessing()) {
+  <div class="absolute inset-0 flex items-center justify-center">
+    <i class="fas fa-spinner fa-spin fa-2xl text-gray-500" aria-hidden="true"></i>
+  </div>
+  }
+
+  <span class="sr-only">
+    {{ isInWishlist() ? 'Remove from wishlist' : 'Add to wishlist' }}
+  </span>
+
+  @if (isProcessing()) {
+  <span class="sr-only">Processing...</span>
+  }
+</button>

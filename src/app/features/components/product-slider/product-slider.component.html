@@ -1,0 +1,11 @@
+<div class="swiper productSwiper">
+  <div class="swiper-wrapper">
+    @for (image of productInfo().images; track $index) {
+
+    <div class="swiper-slide">
+      <img loading="lazy" [src]="image" class="w-full max-w-full" [alt]="productInfo().title" />
+    </div>
+    }
+  </div>
+  <div class="swiper-pagination"></div>
+</div>

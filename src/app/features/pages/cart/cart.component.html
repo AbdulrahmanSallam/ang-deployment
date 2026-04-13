@@ -1,0 +1,56 @@
+<section class="px-4 pt-8 pb-14 w-full">
+  <div class="container">
+    @if (!isEmpty()) {
+    <div class="flex flex-wrap justify-items-center gap-y-10 gap-x-4">
+      <main
+        class="bg-custom-light lg:sticky lg:top-20 lg:right-0 max-w-md w-full lg:w-auto p-5 rounded-lg mx-auto lg:self-start lg:order-1"
+      >
+        <h1 class="heading">Cart Details</h1>
+
+        <div class="my-7 flex justify-between items-center flex-wrap gap-4">
+          <p>
+            <span class="text-custom-green font-medium">Total Price: </span>
+            {{ cart()?.data?.totalCartPrice | currency : "EGP" }}
+          </p>
+          <p>
+            <span class="text-custom-green font-medium">Products Count: </span>
+            {{ cart()?.numOfCartItems }}
+          </p>
+        </div>
+
+        <div class="flex justify-between items-center flex-wrap gap-4">
+          <button
+            [routerLink]="['/checkout', cart()?.cartId]"
+            [state]="{ paymentType: 'cash' }"
+            class="main-btn text-sm"
+          >
+            Pay In Cash
+            <i class="fa-solid fa-wallet text-custom-gray text-lg"></i>
+          </button>
+          <button
+            [routerLink]="['/checkout', cart()?.cartId]"
+            [state]="{ paymentType: 'online' }"
+            class="main-btn text-sm"
+          >
+            Pay Online
+            <i class="fa-brands fa-cc-visa text-custom-visa text-lg"></i>
+          </button>
+        </div>
+      </main>
+
+      <div class="flex-grow">
+        @for (cartProudct of cart()?.data?.products; track cartProudct._id) {
+        <app-cart-item [cartProudct]="cartProudct" />
+        }
+        <div class="mt-4">
+          <button (click)="clearCart()" class="error-btn ms-auto block">
+            Clear <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    }@else {
+    <h1 class="text-center text-xl capitalize">your cart is Empty</h1>
+    }
+  </div>
+</section>

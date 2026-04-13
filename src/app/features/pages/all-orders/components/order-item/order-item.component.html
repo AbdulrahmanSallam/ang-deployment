@@ -1,0 +1,23 @@
+<article>
+  <mat-accordion>
+    <mat-expansion-panel
+      (opened)="panelOpenState.set(true)"
+      (closed)="panelOpenState.set(false)"
+    >
+      <mat-expansion-panel-header class="group">
+        <mat-panel-title>{{ order().createdAt | date }} </mat-panel-title>
+        <mat-panel-description>
+          <span class="font-medium text-custom-green group-hover:text-white"
+            >Total Price:</span
+          >&nbsp;{{ order().totalOrderPrice | currency : "EGP" }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div class="flex flex-col gap-y-4">
+        @for (cartItem of order().cartItems; track $index) {
+        <app-order-product [cartItem]="cartItem" />
+        }
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</article>

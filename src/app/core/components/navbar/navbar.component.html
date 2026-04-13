@@ -1,0 +1,221 @@
+<nav
+  class="bg-custom-light shadow-lg fixed top-0 left-0 right-0 z-50 border-gray-200 dark:bg-gray-900"
+  aria-label="Main navigation"
+>
+  <div class="container py-3">
+    <div class="flex flex-wrap items-center justify-between">
+      <!-- Logo -->
+      <a routerLink="/home" class="flex items-center" aria-label="FreshCart home">
+        <img src="./images/freshcart-logo.svg" alt="" class="h-8" aria-hidden="true" />
+        <span class="sr-only">FreshCart</span>
+      </a>
+
+      <!-- Right Side Controls -->
+      <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+        <!-- Only show auth UI after initialization -->
+        @if (isLoggedIn()) {
+          <!-- Authenticated User UI -->
+          <div class="flex items-center gap-x-6 pt-2">
+            <!-- Cart -->
+            <a
+              routerLink="/cart"
+              routerLinkActive="active"
+              class="relative transition-colors text-custom-green hover:text-custom-dark-green"
+              [attr.aria-label]="'Shopping cart, ' + cartCount() + ' items'"
+              [attr.aria-current]="isRouteActive('/cart') ? 'page' : null"
+            >
+              <mat-icon aria-hidden="true">shopping_cart</mat-icon>
+              @if (cartCount() > 0) {
+                <span
+                  class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                  aria-hidden="true"
+                >
+                  {{ cartCount() }}
+                </span>
+              }
+              <span class="sr-only">{{ cartCount() }} items in cart</span>
+            </a>
+
+            <!-- Wishlist -->
+            <a
+              routerLink="/wishlist"
+              routerLinkActive="active"
+              class="relative transition-colors text-red-600 hover:text-red-700"
+              [attr.aria-label]="'Wishlist, ' + wishlistCount() + ' items'"
+              [attr.aria-current]="isRouteActive('/wishlist') ? 'page' : null"
+            >
+              <mat-icon aria-hidden="true">favorite</mat-icon>
+              @if (wishlistCount() > 0) {
+                <span
+                  class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                  aria-hidden="true"
+                >
+                  {{ wishlistCount() }}
+                </span>
+              }
+              <span class="sr-only">{{ wishlistCount() }} items in wishlist</span>
+            </a>
+
+            <!-- Profile Dropdown -->
+            <div class="relative">
+              <button
+                (click)="toggleProfileMenu()"
+                class="transition-colors hover:text-custom-green"
+                [attr.aria-expanded]="profileMenuOpen()"
+                aria-label="User account menu"
+                aria-haspopup="true"
+                [attr.aria-controls]="profileMenuOpen() ? 'user-menu-dropdown' : null"
+              >
+                <mat-icon aria-hidden="true">account_circle</mat-icon>
+                <span class="sr-only">Toggle user menu</span>
+              </button>
+
+              @if (profileMenuOpen()) {
+                <div
+                  id="user-menu-dropdown"
+                  class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 dark:bg-gray-700"
+                  role="menu"
+                  aria-orientation="vertical"
+                  (click)="$event.stopPropagation()"
+                >
+                  <div class="px-4 py-2">
+                    <span class="text-sm text-gray-900 dark:text-white" aria-label="User name">
+                      {{ userData()?.name || 'User' }}
+                    </span>
+                  </div>
+                  <ul role="none">
+                    <li>
+                      <a
+                        routerLink="/allorders"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600"
+                        role="menuitem"
+                        tabindex="0"
+                        (click)="profileMenuOpen.set(false)"
+                      >
+                        All Orders
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        routerLink="/setting"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600"
+                        role="menuitem"
+                        tabindex="0"
+                        (click)="profileMenuOpen.set(false)"
+                      >
+                        Setting
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        (click)="signOut()"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 cursor-pointer"
+                        role="menuitem"
+                        tabindex="0"
+                      >
+                        Logout
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              }
+            </div>
+          </div>
+        } @else {
+          <!-- Unauthenticated User UI -->
+          <a
+            routerLink="/auth/login"
+            class="bg-white border-2 rounded-full transition-colors hover:text-custom-green px-4 py-1 flex items-center gap-1"
+            aria-label="Sign in to your account"
+            role="button"
+            tabindex="0"
+            [attr.aria-current]="isRouteActive('/auth/login') ? 'page' : null"
+            (click)="$event.preventDefault()"
+          >
+            Sign in
+            <span class="sr-only">account</span>
+            <i class="fa-solid fa-arrow-right fa-beat text-xs" aria-hidden="true"></i>
+          </a>
+        }
+
+        <!-- Mobile Menu Button  -->
+        <button
+          (click)="toggleMobileMenu()"
+          class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none"
+          [attr.aria-label]="mobileMenuOpen() ? 'Close main menu' : 'Open main menu'"
+          [attr.aria-expanded]="mobileMenuOpen()"
+          [attr.aria-controls]="'navbar-menu'"
+        >
+          <span class="sr-only">{{ mobileMenuOpen() ? 'Close' : 'Open' }} main menu</span>
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 17 14" aria-hidden="true">
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M1 1h15M1 7h15M1 13h15"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Main Navigation -->
+      <div
+        [class.hidden]="!mobileMenuOpen()"
+        class="w-full md:block md:w-auto md:order-1"
+        id="navbar-menu"
+        [attr.aria-hidden]="!mobileMenuOpen()"
+      >
+        <ul
+          class="flex flex-col p-1 mt-4 border border-gray-100 rounded-lg md:flex-row md:gap-x-4 md:mt-0 md:border-0"
+          role="menubar"
+        >
+          <li role="none">
+            <a
+              routerLink="/home"
+              routerLinkActive="active-page"
+              class="block py-2 px-3 rounded hover:text-custom-green dark:text-white"
+              role="menuitem"
+              [attr.aria-current]="isRouteActive('/home') ? 'page' : null"
+            >
+              Home
+            </a>
+          </li>
+          <li role="none">
+            <a
+              routerLink="/products"
+              routerLinkActive="active-page"
+              class="block py-2 px-3 rounded hover:text-custom-green dark:text-white"
+              role="menuitem"
+              [attr.aria-current]="isRouteActive('/products') ? 'page' : null"
+            >
+              Products
+            </a>
+          </li>
+          <li role="none">
+            <a
+              routerLink="/categories"
+              routerLinkActive="active-page"
+              class="block py-2 px-3 rounded hover:text-custom-green dark:text-white"
+              role="menuitem"
+              [attr.aria-current]="isRouteActive('/categories') ? 'page' : null"
+            >
+              Categories
+            </a>
+          </li>
+          <li role="none">
+            <a
+              routerLink="/brands"
+              routerLinkActive="active-page"
+              class="block py-2 px-3 rounded hover:text-custom-green dark:text-white"
+              role="menuitem"
+              [attr.aria-current]="isRouteActive('/brands') ? 'page' : null"
+            >
+              Brands
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

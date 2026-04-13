@@ -1,0 +1,38 @@
+<div class="categories-slider-container">
+  <h2 class="text-lg font-bold mb-4">Shop Popular Categories</h2>
+
+  <!-- Loading State -->
+  @if (categories().length === 0) {
+  <div class="flex justify-center items-center h-32">
+    <div class="animate-pulse text-gray-500">Loading categories...</div>
+  </div>
+  }
+
+  <!-- Categories Slider -->
+  @if (categories().length > 0) {
+
+  <!-- Swiper -->
+  <div class="swiper categoriesSwiper h-full w-full">
+    <div class="swiper-wrapper">
+      @for (category of categories(); track category._id) {
+      <div class="swiper-slide">
+        <div class="category-card">
+          <img
+            class="h-[8rem] md:h-[10rem] w-full object-fill rounded-lg"
+            [src]="category.image"
+            [alt]="category.name"
+            [title]="category.name"
+          />
+          <h3 class="text-sm font-medium text-center mt-2">{{ category.name }}</h3>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  }
+
+  <!-- Empty State -->
+  @if (categories().length === 0) {
+  <div class="text-center text-gray-500 py-8">No categories available</div>
+  }
+</div>

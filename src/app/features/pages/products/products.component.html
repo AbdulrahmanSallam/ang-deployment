@@ -1,0 +1,19 @@
+<section class="pt-4 pb-14">
+  @if (products().length > 0) {
+  <header>
+    <app-search-input (searchText)="getSearchText($event)" />
+  </header>
+  <main class="pt-8">
+    <div class="container">
+      <app-product-list
+        (currentPage)="getCurrentPage($event)"
+        [products]="products()"
+        [name]="searchQuery()"
+        [page]="page()"
+        [pageSize]="pageSize()"
+        [total]="total()"
+      ></app-product-list>
+    </div>
+  </main>
+  }
+</section>

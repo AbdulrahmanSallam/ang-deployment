@@ -1,0 +1,9 @@
+<section class="pt-8 pb-14">
+  <div class="container">
+    @if (wishlistProducts().length > 0) {
+    <app-product-list [products]="wishlistProducts()" />
+    }@else {
+    <h1 class="text-center text-xl capitalize">your wishlist is Empty</h1>
+    }
+  </div>
+</section>

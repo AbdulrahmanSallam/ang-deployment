@@ -1,0 +1,9 @@
+.card {
+  @apply w-full h-full rounded-xl hover:shadow-custom-green focus-within:shadow-custom-green transition-shadow cursor-pointer p-2;
+  img {
+    @apply h-56 rounded-t-md w-full;
+  }
+  span {
+    @apply text-center font-semibold block py-3 border-t;
+  }
+}

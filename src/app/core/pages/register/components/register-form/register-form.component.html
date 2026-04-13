@@ -1,0 +1,108 @@
+<form (ngSubmit)="register()" [formGroup]="registerForm" autocomplete="off">
+  <h1 class="heading mb-2">Create Your Account</h1>
+
+  <div class="text-center mb-5">
+    Already have an account?
+    <a routerLink="/auth/login" class="text-sm text-custom-green hover:underline">Login</a>
+  </div>
+
+  <mat-form-field class="w-full mb-4">
+    <mat-label>Full Name</mat-label>
+    <input type="text" formControlName="name" matInput required autocomplete="name" />
+    @if (getControl('name')?.hasError('minlength')) {
+    <mat-error>At least 3 characters</mat-error>
+    } @if (getControl('name')?.hasError('maxlength')) {
+    <mat-error>At most 20 characters</mat-error>
+    } @if (getControl('name')?.hasError('required')) {
+    <mat-error>Name is required</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="w-full mb-4">
+    <mat-label>Email Address</mat-label>
+    <input type="email" formControlName="email" matInput required autocomplete="email" />
+    @if (getControl('email')?.hasError('email') && !getControl('email')?.hasError('required')) {
+    <mat-error>Please enter a valid email address</mat-error>
+    } @if (getControl('email')?.hasError('required')) {
+    <mat-error>Email is required</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="w-full mb-4">
+    <mat-label>Phone Number</mat-label>
+    <input type="tel" formControlName="phone" matInput required autocomplete="tel" />
+    @if (getControl('phone')?.hasError('pattern') && !getControl('phone')?.hasError('required')) {
+    <mat-error>Egyptian phone number only</mat-error>
+    } @if (getControl('phone')?.hasError('required')) {
+    <mat-error>Phone is required</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="w-full mb-2">
+    <mat-label>Password</mat-label>
+    <input
+      formControlName="password"
+      matInput
+      [type]="hidePassword() ? 'password' : 'text'"
+      required
+      autocomplete="new-password"
+    />
+    <button
+      type="button"
+      mat-icon-button
+      matSuffix
+      (click)="togglePasswordVisibility($event)"
+      [attr.aria-label]="hidePassword() ? 'Show password' : 'Hide password'"
+      type="button"
+    >
+      <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+    @if (getControl('password')?.hasError('minlength') &&
+    !getControl('password')?.hasError('required')) {
+    <mat-error>At least 6 characters</mat-error>
+    } @if (getControl('password')?.hasError('maxlength') &&
+    !getControl('password')?.hasError('required')) {
+    <mat-error>At most 20 characters</mat-error>
+    } @if (getControl('password')?.hasError('required')) {
+    <mat-error>Password is required</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="w-full mb-4">
+    <mat-label>Confirm Password</mat-label>
+    <input
+      formControlName="rePassword"
+      matInput
+      [type]="hideConfirmPassword() ? 'password' : 'text'"
+      autocomplete="new-password"
+    />
+    <button
+      type="button"
+      mat-icon-button
+      matSuffix
+      (click)="toggleConfirmPasswordVisibility($event)"
+      [attr.aria-label]="'Hide password'"
+      [attr.aria-pressed]="hideConfirmPassword()"
+    >
+      <mat-icon>{{ hideConfirmPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+    @if (getControl('rePassword')?.hasError('passwordMismatch') &&
+    !getControl('rePassword')?.hasError('required')) {
+    <mat-error>Passwords do not match</mat-error>
+    } @if (getControl('rePassword')?.hasError('required')) {
+    <mat-error>Confirm password is required</mat-error>
+    }
+  </mat-form-field>
+
+  <button
+    type="submit"
+    [disabled]="isRegistering() || registerForm.invalid"
+    [class.disabled-btn]="isRegistering() || registerForm.invalid"
+    type="submit"
+    class="main-btn ms-auto block"
+  >
+    @if (isRegistering()) {
+    <i class="fas fa-spinner fa-spin fa-fw"></i>
+    } Create Account
+  </button>
+</form>

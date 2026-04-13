@@ -1,0 +1,21 @@
+<button
+  type="button"
+  class="main-btn w-full"
+  [class.disabled-btn]="isAddingToCart()"
+  (click)="addToCart()"
+  (keyup.enter)="addToCart()"
+  (keyup.space)="addToCart()"
+  [attr.aria-busy]="isAddingToCart()"
+  [attr.aria-disabled]="isAddingToCart()"
+  [attr.aria-label]="isAddingToCart() ? 'Adding to cart' : 'Add to cart'"
+>
+  <span class="inline-flex items-center justify-center gap-2">
+    @if (isAddingToCart()) {
+    <i class="fas fa-spinner fa-spin fa-fw"></i>
+    }
+    {{ isAddingToCart() ? "Adding..." : "Add To Cart" }}
+  </span>
+  <span class="sr-only" [attr.aria-live]="isAddingToCart() ? 'polite' : null">
+    @if (isAddingToCart()) { Please wait while we add this item to your cart }
+  </span>
+</button>
